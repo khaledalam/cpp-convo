@@ -4,10 +4,11 @@
 
 
 
- khaled_cpp_91-2024_May_11: 
+ khaled_cpp_90-2024_May_10: 28eefcf8-1f19-424f-b299-0d3fbd903514
 
+func_AlamTimes_khaled_cpp_90-2024_May_10
 
- Create me a C++ function called __ which accepts two inputs, the first input is a non-empty list called times of type std::vector<int> all its values should be greater than zero and should be unique, and the second input is called wakeup of type int which represents when the person will wakeup, its value should be greater than zero too. Please make this function return a number of type int that represent how many alarms in the list which are useful. Please consider that the alarm is useful if it runs before the person wakes up or exactly during the person's wake up. Use lambda function in the solution.
+ Create me a C++ function called AlamTimes which accepts two inputs, the first input is a non-empty list called times of type std::vector<int> all its values should be greater than zero and should be unique, and the second input is called wakeup of type int which represents when the person will wakeup, its value should be greater than zero too. Please make this function return a number of type int that represent how many alarms in the list which are useful. Please consider that the alarm is useful if it runs before the person wakes up or exactly during the person's wake up. Use lambda function in the solution.
 
 
 
