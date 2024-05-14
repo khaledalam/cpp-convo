@@ -4,10 +4,16 @@
 
 
 
- khaled_cpp_91-2024_May_11: 
+ khaled_cpp_102-2024_May_14:
 
 
- Create me a C++ function called __ which accepts two inputs, the first input is a non-empty list called times of type std::vector<int> all its values should be greater than zero and should be unique, and the second input is called wakeup of type int which represents when the person will wakeup, its value should be greater than zero too. Please make this function return a number of type int that represent how many alarms in the list which are useful. Please consider that the alarm is useful if it runs before the person wakes up or exactly during the person's wake up. Use lambda function in the solution.
+
+
+Design a C++ function called SortByPairs which accepts two inputs, The first input is a non-empty list of intervals called slots of type
+std::vector<std::pair<int, int>>, each pair represents an interval where the first argument should be less than or equal to the second
+argument, second input called suggestion of type int. This function should return a number of type int which represents how many intervals
+suit the suggestion. Please note that interval is suitable if the suggestion intersects it(between or equal first and second arguments of
+the interval). please also don't forget to validate the inputs.
 
 
 
@@ -15,109 +21,46 @@
 
 #include <algorithm>
 #include <iostream>
-#include <set>
+#include <list>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
-int AlamTimes(std::vector<int> times, int wakeup) {
-    if (times.empty()) {
-        throw std::invalid_argument("times list can't be empty");
+std::vector<int> SortByPairs(std::vector<int> pairs) {
+    if (pairs.empty()) {
+        throw std::invalid_argument("pairs can't be empty");
     }
 
-    if (wakeup < 1) {
-        throw std::invalid_argument("wakeup can't be less than 1");
+    std::list<int> the_list;
+
+    for (const int &pair : pairs) {
+        the_list.push_back(pair);
     }
 
-    std::set<int> set_con;
+    the_list.sort([](const int &first, const int &second) { return first > second; });
 
-    std::sort(times.begin(), times.end(), [](const int &time_a, const int &time_b) { return time_a < time_b; });
+    std::vector<int> sorted;
 
-    int result = 0;
-    for (const int &time : times) {
-        if (time < 1) {
-            throw std::invalid_argument("time can't be less than 1");
-        }
-        set_con.insert(time);
-        if (time <= wakeup) {
-            result++;
-        } else {
-            break;
-        }
+    while (the_list.size()) {
+        sorted.push_back(the_list.front());
+        the_list.pop_front();
+
+        sorted.push_back(the_list.back());
+        the_list.pop_back();
     }
 
-    if (set_con.size() != times.size()) {
-        throw std::invalid_argument("times list should be unique");
-    }
-
-    return result;
+    return sorted;
 }
 
 #include <cassert>
 int main() {
     // TEST
-    assert(AlamTimes({1, 3}, 2) == 1);
-    // TEST_END
-
-    // TEST
-    assert(AlamTimes({1, 3}, 3) == 2);
-    // TEST_END
-
-    // TEST
-    assert(AlamTimes({1}, 1) == 1);
-    // TEST_END
-
-    // TEST
-    assert(AlamTimes({2}, 1) == 0);
+    assert((SortByPairs({1, 0, 55, -4}) == std::vector<int>{55, -4, 1, 0}));
     // TEST_END
 
     // TEST
     try {
-        AlamTimes({0}, 1);
-        assert(false);
-    } catch (const std::exception &e) {
-        assert(true);
-    }
-    // TEST_END
-
-    // TEST
-    try {
-        AlamTimes({-1}, 1);
-        assert(false);
-    } catch (const std::exception &e) {
-        assert(true);
-    }
-    // TEST_END
-
-    // TEST
-    try {
-        AlamTimes({1}, -1);
-        assert(false);
-    } catch (const std::exception &e) {
-        assert(true);
-    }
-    // TEST_END
-
-    // TEST
-    try {
-        AlamTimes({1}, 0);
-        assert(false);
-    } catch (const std::exception &e) {
-        assert(true);
-    }
-    // TEST_END
-
-    // TEST
-    try {
-        AlamTimes({}, 1);
-        assert(false);
-    } catch (const std::exception &e) {
-        assert(true);
-    }
-    // TEST_END
-
-    // TEST
-    try {
-        AlamTimes({1, 1}, 1);
+        SortByPairs({});
         assert(false);
     } catch (const std::exception &e) {
         assert(true);

@@ -3,10 +3,11 @@
         {
             "type": "cppbuild",
             "label": "C/C++: g++.exe build active file",
-            "command": "C:\\MinGW\\bin\\g++.exe",
+            "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
+                "--std=c++11",
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
