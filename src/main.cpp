@@ -4,63 +4,74 @@
 
 
 
- khaled_cpp_102-2024_May_14:
+ khaled_cpp_104-2024_May_14:
 
 
+ID: PI-0272-00202-2
+Category: Math
 
 
-Design a C++ function called SortByPairs which accepts two inputs, The first input is a non-empty list of intervals called slots of type
-std::vector<std::pair<int, int>>, each pair represents an interval where the first argument should be less than or equal to the second
-argument, second input called suggestion of type int. This function should return a number of type int which represents how many intervals
-suit the suggestion. Please note that interval is suitable if the suggestion intersects it(between or equal first and second arguments of
-the interval). please also don't forget to validate the inputs.
-
+Write a function that accepts a string representing a coin toss pattern (e.g., 'HHTTHHTT') and calculates the probability of obtaining that pattern within n tosses. The output should be an exact fraction. The function should raise a ValueError if the pattern is not valid.
 
 
  */
 
 #include <algorithm>
 #include <iostream>
-#include <list>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-std::vector<int> SortByPairs(std::vector<int> pairs) {
-    if (pairs.empty()) {
-        throw std::invalid_argument("pairs can't be empty");
-    }
-
-    std::list<int> the_list;
-
-    for (const int &pair : pairs) {
-        the_list.push_back(pair);
-    }
-
-    the_list.sort([](const int &first, const int &second) { return first > second; });
-
-    std::vector<int> sorted;
-
-    while (the_list.size()) {
-        sorted.push_back(the_list.front());
-        the_list.pop_front();
-
-        sorted.push_back(the_list.back());
-        the_list.pop_back();
-    }
-
-    return sorted;
-}
 
 #include <cassert>
 int main() {
+    WeddingGuestList wedding_guest_list;
+
     // TEST
-    assert((SortByPairs({1, 0, 55, -4}) == std::vector<int>{55, -4, 1, 0}));
+    assert(wedding_guest_list.CountNumberOfGuests() == 0);
+    // TEST_END
+
+    // TEST
+    wedding_guest_list.AddInvitation(Invitations{.name = "test", .num_of_people = 2, .is_attending = true});
+    assert(wedding_guest_list.CountNumberOfGuests() == 2);
+    // TEST_END
+
+    // TEST
+    wedding_guest_list.AddInvitation(Invitations{.name = "test a", .num_of_people = 2, .is_attending = true});
+    assert(wedding_guest_list.CountNumberOfGuests() == 4);
+    // TEST_END
+
+    // TEST
+    wedding_guest_list.AddInvitation(Invitations{.name = "AB", .num_of_people = 1, .is_attending = true});
+    assert(wedding_guest_list.CountNumberOfGuests() == 5);
+    // TEST_END
+
+    // TEST
+    wedding_guest_list.AddInvitation(Invitations{.name = "ABcd", .num_of_people = 1, .is_attending = false});
+    assert(wedding_guest_list.CountNumberOfGuests() == 5);
     // TEST_END
 
     // TEST
     try {
-        SortByPairs({});
+        wedding_guest_list.AddInvitation(Invitations{.name = "test A", .num_of_people = 3, .is_attending = true});
+        assert(false);
+    } catch (const std::exception &e) {
+        assert(true);
+    }
+    // TEST_END
+
+    // TEST
+    try {
+        wedding_guest_list.AddInvitation(Invitations{.name = "", .num_of_people = 3, .is_attending = true});
+        assert(false);
+    } catch (const std::exception &e) {
+        assert(true);
+    }
+    // TEST_END
+
+    // TEST
+    try {
+        wedding_guest_list.AddInvitation(Invitations{.name = "abc", .num_of_people = -1, .is_attending = true});
         assert(false);
     } catch (const std::exception &e) {
         assert(true);
