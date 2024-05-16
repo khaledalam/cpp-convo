@@ -4,10 +4,13 @@
 
 
 
- khaled_cpp_112-2024_May_15:
+ khaled_cpp_111-2024_May_15: a8badebb-d8bf-4133-88dc-83030d0344e6
 
 
-Make me a C++ function called FirstUnseenPositiveNumber that takes a non-empty array input of type std::vector<int> which represent decimal digits representing a
+func_AddOne_khaled_cpp_111-2024_May_15
+
+
+Make me a C++ function called AddOne that takes a non-empty array input of type std::vector<int> which represent decimal digits representing a
 non-negative integer. This function should adds one to this number and return another array of type std::vector<int> which represent the number
 after adding 1 to it. Please don't forget to validate the inputs.
 
@@ -22,22 +25,32 @@ after adding 1 to it. Please don't forget to validate the inputs.
 #include <string>
 #include <vector>
 
-int FirstMissingPositive(std::vector<int>& nums) {
-    int size = nums.size();
+std::vector<int> AddOne(const std::vector<int> &digits) {
+    if (digits.empty()) {
+        throw std::invalid_argument("digits can't be empty");
+    }
 
-    for (int idx = 0; idx < size; ++idx) {
-        while (nums[idx] > 0 && nums[idx] <= size && nums[nums[idx] - 1] != nums[idx]) {
-            std::swap(nums[idx], nums[nums[idx] - 1]);
+    for (const int &digit : digits) {
+        if (digit < 0) {
+            throw std::invalid_argument("digit can't be below 0");
+        }
+    }
+    std::vector<int> result(digits);
+
+    int size = digits.size();
+
+    for (int idx = size - 1; idx >= 0; --idx) {
+        if (result[idx] < 9) {
+            result[idx]++;
+            return result;
+        } else {
+            result[idx] = 0;
         }
     }
 
-    for (int idx = 0; idx < size; ++idx) {
-        if (nums[idx] != idx + 1) {
-            return idx + 1;
-        }
-    }
+    result.insert(result.begin(), 1);
 
-    return size + 1;
+    return result;
 }
 
 #include <cassert>
