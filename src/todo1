@@ -1,0 +1,99 @@
+/***
+ * Prompt:
+
+
+
+
+ khaled_cpp_115-2024_May_17:
+ 
+
+
+Design a C++ function called CalcFinalGrades that takes a non-empty numbers array between a range of -100 and 100, this input is called nums of type std::vector<int>. This function should return another sorted array of type std::vector<int>, this array should be sorted by their absolute values using a lambda function. Please don't forget to validate the input.
+
+
+
+
+ */
+
+#include <algorithm>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <numeric>
+#include <stdexcept>
+
+struct Student {
+    std::string name;
+    std::vector<int> grades;
+    double finalGrade;
+    char letterGrade;
+};
+
+char CalculateLetterGrade(double grade) {
+    if (grade >= 90) return 'A';
+    if (grade >= 80) return 'B';
+    if (grade >= 70) return 'C';
+    if (grade >= 60) return 'D';
+    return 'F';
+}
+
+std::vector<Student> CalculateFinalGrades(const std::vector<Student>& students) {
+    std::vector<Student> finalGrades;
+    
+    for (const auto& student : students) {
+        if (student.grades.empty()) {
+            throw std::invalid_argument("Grades list cannot be empty");
+        }
+        
+        Student finalStudent = student;
+        finalStudent.finalGrade = std::accumulate(student.grades.begin(), student.grades.end(), 0.0) / student.grades.size();
+        finalStudent.letterGrade = CalculateLetterGrade(finalStudent.finalGrade);
+        finalGrades.push_back(finalStudent);
+    }
+    
+    return finalGrades;
+}
+
+
+#include <cassert>
+int main() {
+
+    std::vector<Student> students = {
+        {"Alice", {85, 90, 88}},
+        {"Bob", {70, 75, 78}},
+        {"Charlie", {60, 65, 63}},
+        {"David", {95, 92, 96}},
+        {"Eve", {50, 55, 53}}
+    };
+    
+    try {
+        std::vector<Student> finalGrades = CalculateFinalGrades(students);
+        for (const auto& student : finalGrades) {
+            std::cout << student.name << ": " << student.finalGrade << " (" << student.letterGrade << ")\n";
+        }
+    } catch (const std::invalid_argument& e) {
+        std::cerr << e.what() << std::endl;
+    }
+    
+    return 0;
+    
+    // TEST
+    assert((SortByAbsoluteValues({1, 2, 3}) == std::vector<int>{1, 3, 5}));
+    // TEST_END
+
+
+    // TEST
+    try {
+        SortByAbsoluteValues({105});
+        assert(false);
+    } catch (const std::exception &e) {
+        assert(true);
+    }
+    // TEST_END
+}
