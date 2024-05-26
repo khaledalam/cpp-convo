@@ -5,8 +5,9 @@
 
 
 
- khaled_cpp_163_2024_May_27:
+ khaled_cpp_161_2024_May_26: 3e257aa0-9c2b-44ee-a1ac-c970396b5160
 
+ func_Display_khaled_cpp_161_2024_May_26
 
 
 Create a C++ function called Display that takes 2 non-empty arrays of type std::vector<int>, the length of both of them
