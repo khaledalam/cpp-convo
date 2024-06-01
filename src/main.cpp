@@ -22,12 +22,60 @@ This function should return another number of type int y (1 ≤ y < num) such th
 #include <stdexcept>
 #include <string>
 
-int MaxGCD(int num) {
-    if (num < 1) {
-        throw std::invalid_argument("num should be greater than 0");
+int MaxGCD(std::vector<std::vector<int>> grid) {
+   
+   
+   vector<int> a(n);
+    vector<int> b(n);
+    for(int i = 0 ; i < n ; i++ ){
+        cin >> c;
+        a[i] = (signed)(c - '0');
     }
-
-    return num - 1;
+    for(int i = 0 ; i < n ; i++ ){
+        cin >> c;
+        b[i] = (signed)(c - '0');
+    }
+    vector<signed> path;
+    path.push_back(a[0]);
+ 
+    int k = 1;
+    int res;
+    int count = 1;
+    while( k < n ){
+        while( k < n && a[k] == b[k-1] ){
+            count++;
+            path.push_back(a[k]);
+            k++;
+        }
+        
+        if ( k == n ) {
+            break;
+            path.push_back(b[k - 1]);
+            res = count;
+        }
+        else if ( a[k] == 0 ) {
+            count = 1;
+            path.push_back(a[k]);
+            k++;
+        }
+        else { // a[k] == 1 && b[k-1] == 0
+            for ( int i = k - 1; i < n ; i++ )
+                path.push_back(b[i]);
+            res = count;
+            k = n;
+        }
+    }
+    if ( k == n && path.size() == n) {
+        path.push_back(b[k - 1]);
+        res = count;
+    }
+    
+ 
+    for(int idx = 0 ; idx < path.size() ; idx++)
+        cout << path[idx];
+    cout << endl;
+    
+    cout <<  res << endl;
 }
 
 #include <cassert>
