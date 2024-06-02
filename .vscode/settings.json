@@ -49,6 +49,9 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "list": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "cassert": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
     }
 }

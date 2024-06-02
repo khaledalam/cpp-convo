@@ -11,7 +11,7 @@
 
 
 
-Create a C++ function called FitTable that takes a non-empty array called grid of type std::vector<std::string>, all rows
+Design a C++ function called FitTable that takes a non-empty array called grid of type std::vector<std::string>, all rows
 are with the same length and each cell should be either '1' or '0', 0 stands for a free square meter of the office room.
 1 stands for an occupied square meter.
 

@@ -5,10 +5,13 @@
 
 
 
- khaled_cpp_191_2024_June_02:
- 
+ khaled_cpp_190_2024_June_02: fe497bbe-2e6e-4e65-bbe0-ab16b292576b
 
-Design a C++ function called ___ that takes one input: a non-empty matrix of characters called matrix where
+ func_MaximalRectangle_khaled_cpp_190_2024_June_02
+
+
+
+Design a C++ function called MaximalRectangle that takes one input: a non-empty matrix of characters called matrix where
 each element is either '0' or '1'. This function should return an integer representing the area of the largest rectangle
 containing only '1's. Use dynamic programming to solve the problem. Please don't forget to validate the input.
 
