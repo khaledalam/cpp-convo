@@ -5,9 +5,9 @@
 
 
 
- khaled_cpp_193_2024_June_09: 
- 
+ khaled_cpp_192_2024_June_09: 86893d5a-e339-416e-9a68-3433f4b05917
 
+func_MinimumEdgeReversal_khaled_cpp_192_2024_June_09
 
 Design a C++ function called MinimumEdgeReversal that takes the following inputs:
 

@@ -1,5 +1,10 @@
 
-191. 
+
+
+193. 
+192. khaled_cpp_192_2024_June_09: 86893d5a-e339-416e-9a68-3433f4b05917
+191. khaled_cpp_191_2024_June_09: 15582cb2-4c38-4ba6-a8ae-b79b16c5778e
+
 190. khaled_cpp_190_2024_June_02: fe497bbe-2e6e-4e65-bbe0-ab16b292576b
 189. khaled_cpp_189_2024_June_02: d7e4eaef-b860-4ecf-b186-bb0798b81f85
 188. khaled_cpp_188_2024_June_02: 40c484d8-f0fc-49d7-b8e5-ed29fcedf56f

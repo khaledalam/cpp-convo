@@ -52,6 +52,8 @@
         "iomanip": "cpp",
         "cassert": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "codecvt": "cpp",
+        "locale": "cpp"
     }
 }
