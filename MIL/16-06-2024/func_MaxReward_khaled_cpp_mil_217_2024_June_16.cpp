@@ -1,16 +1,16 @@
 /***
 
 
+ khaled_cpp_mil_217_2024_June_16: a2d1a4b4-06ea-4874-934a-51d3dc9ec283
+
+ func_MaxReward_khaled_cpp_mil_217_2024_June_16
+
+*/
+
+/*
 
 
-
-
- khaled_cpp_185_2024_June_02: 9fb82d70-ca1b-4824-9594-5bf92cd474f3
-
- func_MaximizeReward_khaled_cpp_185_2024_June_02
-
-
-Create a C++ function called MaximizeReward that takes two non-empty arrays of type std::vector<int>, the length of both
+Create a C++ function called MaxReward that takes two non-empty arrays of type std::vector<int>, the length of both
 of them should be the same and should be greater than 2.
 
 There are n tasks, and the i-th task has a difficulty level given by difficulties-i. We want to complete exactly three
@@ -23,18 +23,18 @@ This function should return a number of type int that represents the maximum tot
 -1. Please don't forget to validate the input.
 
 
+
 */
 
 #include <algorithm>
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <limits>
 #include <vector>
 
 const long long neg_inf = -1 * INT_MAX;
 
-int MaximizeReward(std::vector<int> difficulties, std::vector<int> rewards) {
+int MaxReward(std::vector<int> difficulties, std::vector<int> rewards) {
     if (difficulties.size() < 3 || rewards.size() < 3) {
         throw std::invalid_argument("difficulties and rewards sizes should be at least 3");
     }
@@ -62,20 +62,20 @@ int MaximizeReward(std::vector<int> difficulties, std::vector<int> rewards) {
 #include <cassert>
 int main() {
     // TEST
-    assert(MaximizeReward({1, 3, 5, 7, 9}, {10, 20, 30, 40, 50}) == 120);
+    assert(MaxReward({1, 3, 5, 7, 9}, {10, 20, 30, 40, 50}) == 120);
     // TEST_END
 
     // TEST
-    assert(MaximizeReward({5, 4, 3, 2, 1}, {10, 20, 30, 40, 50}) == -1);
+    assert(MaxReward({5, 4, 3, 2, 1}, {10, 20, 30, 40, 50}) == -1);
     // TEST_END
 
     // TEST
-    assert(MaximizeReward({1, 2, 3, 4, 5, 6, 7}, {10, 20, 30, 40, 50, 60, 70}) == 180);
+    assert(MaxReward({1, 2, 3, 4, 5, 6, 7}, {10, 20, 30, 40, 50, 60, 70}) == 180);
     // TEST_END
 
     // TEST
     try {
-        MaximizeReward({1, 2}, {1, 2});
+        MaxReward({1, 2}, {1, 2});
         assert(false);
     } catch (const std::invalid_argument &e) {
         assert(true);
@@ -84,7 +84,7 @@ int main() {
 
     // TEST
     try {
-        MaximizeReward({}, {});
+        MaxReward({}, {});
         assert(false);
     } catch (const std::invalid_argument &e) {
         assert(true);

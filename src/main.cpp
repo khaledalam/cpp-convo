@@ -1,103 +1,163 @@
 /***
 
 
+ khaled_cpp_mil_240_2024_June_23:
 
 
 
 
- khaled_cpp_193_2024_June_09: 
- 
 
 
-Design a C++ function called MinimumEdgeReversal that takes the following inputs:
 
-- An integer num_nodes representing the number of nodes in the graph.
-- A vector of pairs of integers edges representing directed edges in the graph, where Edge is a struct contains 2 integers from_node and to_node.
-- Two integers start_node and end_node representing the start and target nodes respectively.
 
-The function should return an integer representing the minimum number of edge reversals required to reach the target node from the start node. If it's not possible to reach the target node, please make the function return -1.
+
+
+
+*/
+
+/*
+
+
+
+
 
 */
 
 #include <algorithm>
 #include <cassert>
-#include <deque>
+#include <cmath>
+#include <functional>
 #include <iostream>
-#include <limits>
+#include <random>
 #include <stdexcept>
-#include <string>
 #include <vector>
 
-struct Edge {
-    int from_node;
-    int to_node;
+struct Particle {
+    std::vector<std::vector<double>> position;
+    std::vector<std::vector<double>> velocity;
+    std::vector<std::vector<double>> best_position;
+    double best_value;
 };
 
-int MinimumEdgeReversal(int num_nodes, std::vector<Edge> edges, int start_node, int end_node) {
-    if (num_nodes <= 0 || start_node < 0 || start_node >= num_nodes || end_node < 0 || end_node >= num_nodes) {
-        throw std::invalid_argument("Invalid input");
+double EvaluateFitness(const std::vector<std::vector<double>> &position,
+                       const std::vector<std::vector<double>> &matrix) {
+    double error = 0.0;
+    for (size_t i = 0; i < matrix.size(); ++i) {
+        for (size_t j = 0; j < matrix[0].size(); ++j) {
+            double value = 0.0;
+            for (size_t k = 0; k < matrix.size(); ++k) {
+                value += matrix[i][k] * position[k][j];
+            }
+            error += std::pow((i == j ? 1.0 : 0.0) - value, 2);
+        }
+    }
+    return error;
+}
+
+std::vector<std::vector<double>> SolveMatrixInversionPSO(const std::vector<std::vector<double>> &matrix) {
+    const int num_particles = 50;
+    const int iterations = 1000;
+    const double inertia_weight = 0.729;
+    const double cognitive_parameter = 1.49445;
+    const double social_parameter = 1.49445;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(-1.0, 1.0);
+    std::uniform_real_distribution<> velocity_dis(-0.1, 0.1);
+
+    size_t dimensions = matrix.size();
+    std::vector<Particle> swarm(num_particles);
+    for (int i = 0; i < num_particles; ++i) {
+        swarm[i].position = std::vector<std::vector<double>>(dimensions, std::vector<double>(dimensions));
+        swarm[i].velocity = std::vector<std::vector<double>>(dimensions, std::vector<double>(dimensions));
+        for (size_t j = 0; j < dimensions; ++j) {
+            for (size_t k = 0; k < dimensions; ++k) {
+                swarm[i].position[j][k] = dis(gen);
+                swarm[i].velocity[j][k] = velocity_dis(gen);
+            }
+        }
+        swarm[i].best_position = swarm[i].position;
+        swarm[i].best_value = EvaluateFitness(swarm[i].position, matrix);
     }
 
-    std::vector<std::vector<std::pair<int, int>>> graph(num_nodes);
-    for (const auto &edge : edges) {
-        graph[edge.from_node].emplace_back(edge.to_node, 0);
-        graph[edge.to_node].emplace_back(edge.from_node, 1);
+    std::vector<std::vector<double>> global_best_position = swarm[0].best_position;
+    double global_best_value = swarm[0].best_value;
+
+    for (const Particle &particle : swarm) {
+        if (particle.best_value < global_best_value) {
+            global_best_value = particle.best_value;
+            global_best_position = particle.best_position;
+        }
     }
 
-    std::vector<int> distances(num_nodes, std::numeric_limits<int>::max());
-    std::deque<int> node_queue;
-    node_queue.push_back(start_node);
-    distances[start_node] = 0;
-
-    while (!node_queue.empty()) {
-        int current_node = node_queue.front();
-        node_queue.pop_front();
-        for (const auto &neighbor : graph[current_node]) {
-            int neighbor_node = neighbor.first;
-            int edge_cost = neighbor.second;
-            if (distances[current_node] + edge_cost < distances[neighbor_node]) {
-                distances[neighbor_node] = distances[current_node] + edge_cost;
-                if (edge_cost == 0) {
-                    node_queue.push_front(neighbor_node);
-                } else {
-                    node_queue.push_back(neighbor_node);
+    for (int iteration = 0; iteration < iterations; ++iteration) {
+        for (Particle &particle : swarm) {
+            for (size_t j = 0; j < dimensions; ++j) {
+                for (size_t k = 0; k < dimensions; ++k) {
+                    particle.velocity[j][k] = inertia_weight * particle.velocity[j][k] +
+                                              cognitive_parameter * ((double)rand() / RAND_MAX) *
+                                                  (particle.best_position[j][k] - particle.position[j][k]) +
+                                              social_parameter * ((double)rand() / RAND_MAX) *
+                                                  (global_best_position[j][k] - particle.position[j][k]);
+                    particle.position[j][k] += particle.velocity[j][k];
                 }
+            }
+
+            double fitness = EvaluateFitness(particle.position, matrix);
+            if (fitness < particle.best_value) {
+                particle.best_value = fitness;
+                particle.best_position = particle.position;
+            }
+
+            if (fitness < global_best_value) {
+                global_best_value = fitness;
+                global_best_position = particle.position;
             }
         }
     }
 
-    return distances[end_node] == std::numeric_limits<int>::max() ? -1 : distances[end_node];
+    return global_best_position;
 }
 
 #include <cassert>
+#include <cmath>
+#include <iostream>
+#include <vector>
+
 int main() {
     // TEST
-    std::vector<Edge> edges1 = {{0, 1}, {2, 0}, {1, 2}};
-    int result1 = MinimumEdgeReversal(3, edges1, 0, 2);
-    assert(result1 == 0);
+    std::vector<std::vector<double>> matrix1 = {{1, 2}, {3, 4}};
+
+    auto result1 = SolveMatrixInversionPSO(matrix1);
+    assert(result1.size() == matrix1.size());
+    for (size_t i = 0; i < result1.size(); ++i) {
+        for (size_t j = 0; j < result1[0].size(); ++j) {
+            assert(std::abs(result1[i][j] - ((i == j) ? 1 : 0)) < 0.1);
+        }
+    }
     // TEST_END
 
     // TEST
-    std::vector<Edge> edges2 = {{0, 1}, {1, 2}, {2, 3}, {3, 0}};
-    int result2 = MinimumEdgeReversal(4, edges2, 0, 3);
-    assert(result2 == 0);
+    std::vector<std::vector<double>> matrix2 = {{2, 0, 1}, {1, 3, 2}, {3, 2, 1}};
+
+    auto result2 = SolveMatrixInversionPSO(matrix2);
+    assert(result2.size() == matrix2.size());
+    for (size_t i = 0; i < result2.size(); ++i) {
+        for (size_t j = 0; j < result2[0].size(); ++j) {
+            assert(std::abs(result2[i][j] - ((i == j) ? 1 : 0)) < 0.1);
+        }
+    }
     // TEST_END
 
     // TEST
-    std::vector<Edge> edges3 = {{0, 1}, {1, 2}, {2, 3}};
-    int result3 = MinimumEdgeReversal(4, edges3, 3, 0);
-    assert(result3 == 3);
+    try {
+        SolveMatrixInversionPSO({});
+        assert(false);
+    } catch (...) {
+        assert(true);
+    }
     // TEST_END
 
-    // TEST
-    std::vector<Edge> edges4 = {{0, 1}, {1, 2}, {2, 3}};
-    int result4 = MinimumEdgeReversal(4, edges4, 0, 3);
-    assert(result4 == 0);
-    // TEST_END
-
-    // TEST
-    std::vector<Edge> edges5 = {{0, 1}, {1, 2}, {2, 3}, {3, 4}};
-    int result5 = MinimumEdgeReversal(5, edges5, 0, 4);
-    assert(result5 == 0);
-    // TEST_END
+    std::cout << "All tests passed!" << std::endl;
 }
